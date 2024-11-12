@@ -1,5 +1,5 @@
 from fastapi import FastAPI, File, UploadFile, Form, Request
-from fastapi.responses import HTMLResponse, StreamingResponse
+from fastapi.responses import HTMLResponse, StreamingResponse, FileResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 import uvicorn
@@ -67,7 +67,6 @@ async def upload_image(
     # 定义输出文件路径
     temp_output_path = os.path.join(base_dir, f"temp/output_{file.filename}")
     input_font_path = os.path.join(base_dir, "static/fonts/", font_path)
-    print("===<", temp_output_path, input_font_path)
 
     # 处理水印
     try:
@@ -94,13 +93,26 @@ async def upload_image(
         with open(temp_output_path, mode="rb") as file_like:
             yield from file_like
 
+    def file_generator():
+        try:
+            with open(temp_output_path, mode="rb") as file:
+                yield from file
+        finally:
+            try:
+                os.unlink(temp_output_path)  # 删除文件
+                os.unlink(temp_input_path)
+            except Exception as e:
+                print(f"Error while deleting file: {e}")
+
     # 清理临时文件
     # os.remove(temp_input_path)
     # os.remove(temp_output_path)
 
-    return StreamingResponse(iterfile(), media_type="image/jpeg", headers={
-        "Content-Disposition": f"attachment; filename=watermarked_{file.filename}"
-    })
+    # return StreamingResponse(file_generator(), media_type="image/jpeg", headers={
+    #     "Content-Disposition": f"attachment; filename=watermarked_{file.filename}"
+    # })
+
+    return FileResponse(temp_output_path, media_type="image/jpeg", filename=f'watermarked_{file.filename}')
 
 if __name__ == "__main__":
     temp_dir = os.path.join(base_dir, "temp")

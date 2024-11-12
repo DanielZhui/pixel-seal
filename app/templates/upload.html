@@ -58,8 +58,10 @@
             <div class="error">{{ error }}</div>
         {% endif %}
         <form action="/upload/" enctype="multipart/form-data" method="post">
-            <label for="file">选择图片文件:</label>
-            <input type="file" id="file" name="file" accept="image/*" required>
+            <div>
+                <label for="file">选择图片文件:</label>
+                <input type="file" id="file" name="file" accept="image/*" required>
+            </div>
 
             <label for="text">水印文本:</label>
             <input type="text" id="text" name="text" placeholder="输入水印文本" required>
