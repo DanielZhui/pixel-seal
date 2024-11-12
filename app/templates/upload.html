@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>图片水印服务</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px 40px 40px 40px;
+            border-radius: 8px;
+            max-width: 600px;
+            margin: auto;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+        }
+        input[type="text"], input[type="number"], select {
+            width: 100%;
+            padding: 10px;
+            margin: 6px 0 20px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        input[type="file"] {
+            margin-bottom: 20px;
+        }
+        label {
+            font-weight: bold;
+        }
+        .error {
+            color: red;
+            margin-bottom: 20px;
+        }
+        button {
+            background-color: #5cb85c;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #4cae4c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>图片水印服务</h2>
+        {% if error %}
+            <div class="error">{{ error }}</div>
+        {% endif %}
+        <form action="/upload/" enctype="multipart/form-data" method="post">
+            <label for="file">选择图片文件:</label>
+            <input type="file" id="file" name="file" accept="image/*" required>
+
+            <label for="text">水印文本:</label>
+            <input type="text" id="text" name="text" placeholder="输入水印文本" required>
+
+            <label for="font_path">字体文件:</label>
+            <select id="font_path" name="font_path">
+                <option value="Amatic-Bold.ttf">Amatic Bold</option>
+                <option value="AmaticSC-Regular.ttf">AmaticSC Regular</option>
+                <!-- 可以添加更多字体选项 -->
+            </select>
+
+            <label for="font_size">字体大小:</label>
+            <input type="number" id="font_size" name="font_size" min="10" max="200" value="36" required>
+
+            <label for="color">水印颜色 (R,G,B):</label>
+            <input type="text" id="color" name="color" placeholder="例如: 255,255,255" value="255,255,255" required>
+
+            <label for="opacity">水印透明度 (0-255):</label>
+            <input type="number" id="opacity" name="opacity" min="0" max="255" value="128" required>
+
+            <label for="density">水印密度 (每行和每列的数量):</label>
+            <input type="number" id="density" name="density" min="1" max="20" value="5" required>
+
+            <label for="rotation">水印旋转角度:</label>
+            <input type="number" id="rotation" name="rotation" min="0" max="360" value="45" required>
+
+            <label for="margin">水印边距 (x,y):</label>
+            <input type="text" id="margin" name="margin" placeholder="例如: 10,10" value="10,10" required>
+
+            <button type="submit">添加水印并下载</button>
+        </form>
+    </div>
+</body>
+</html>
