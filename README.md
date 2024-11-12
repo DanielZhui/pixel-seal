@@ -1,2 +1,2 @@
 # pixel-seal
-Python build a watermarker service
+> Python builds image processing service
