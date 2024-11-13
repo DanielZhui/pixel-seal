@@ -1,5 +1,5 @@
 from fastapi import FastAPI, File, UploadFile, Form, Request, HTTPException
-from fastapi.responses import HTMLResponse, StreamingResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, StreamingResponse, RedirectResponse, FileResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 import uvicorn
@@ -135,12 +135,13 @@ async def download_image(image_id: str):
     response.headers["Content-Disposition"] = f"attachment; filename=watermarked_{image_id}.jpg"
 
     # 异步删除文件 (Note: Uvicorn 和 FastAPI 目前不支持异步文件操作很方便，请确保此操作不会影响性能)
-    try:
-        os.remove(image_path)
-    except Exception as e:
-        print(f"删除临时文件出错: {str(e)}")
+    # try:
+    #     os.remove(image_path)
+    # except Exception as e:
+    #     print(f"删除临时文件出错: {str(e)}")
+    # return response
 
-    return response
+    return FileResponse(image_path, filename=f"watermarked_{image_id}.jpg")
 
 # 定期清理临时目录（可选）
 # 这里建议使用外部工具（如cron作业）或后台任务来定期清理过期的临时文件
