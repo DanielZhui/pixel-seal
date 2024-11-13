@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>图片水印服务</title>
+    <title>图片水印服务 - 上传</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -68,9 +68,9 @@
 
             <label for="font_path">字体文件:</label>
             <select id="font_path" name="font_path">
-                <option value="Amatic-Bold.ttf">Amatic Bold</option>
-                <option value="AmaticSC-Regular.ttf">AmaticSC Regular</option>
-                <!-- 可以添加更多字体选项 -->
+                <option value="static/fonts/Amatic-Bold.ttf">Amatic Bold</option>
+                <option value="static/fonts/AmaticSC-Regular.ttf">AmaticSC Regular</option>
+                <!-- 可以添加更多字体选项，根据 'app/static/fonts/' 目录下的字体文件 -->
             </select>
 
             <label for="font_size">字体大小:</label>
@@ -91,7 +91,7 @@
             <label for="margin">水印边距 (x,y):</label>
             <input type="text" id="margin" name="margin" placeholder="例如: 10,10" value="10,10" required>
 
-            <button type="submit">添加水印并下载</button>
+            <button type="submit">添加水印</button>
         </form>
     </div>
 </body>
