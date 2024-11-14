@@ -139,9 +139,9 @@ async def download_image(image_id: str):
     #     os.remove(image_path)
     # except Exception as e:
     #     print(f"删除临时文件出错: {str(e)}")
-    # return response
+    return response
 
-    return FileResponse(image_path, filename=f"watermarked_{image_id}.jpg")
+    # return FileResponse(image_path, filename=f"watermarked_{image_id}.jpg")
 
 # 定期清理临时目录（可选）
 # 这里建议使用外部工具（如cron作业）或后台任务来定期清理过期的临时文件
