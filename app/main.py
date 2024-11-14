@@ -1,12 +1,15 @@
-from fastapi import FastAPI, File, UploadFile, Form, Request, HTTPException
-from fastapi.responses import HTMLResponse, StreamingResponse, RedirectResponse, FileResponse
+from fastapi import FastAPI, File, UploadFile, Form, Request, HTTPException, BackgroundTasks
+from fastapi.responses import HTMLResponse, StreamingResponse, RedirectResponse, Response
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
+from starlette.middleware.base import BaseHTTPMiddleware
 import uvicorn
 from io import BytesIO
 import os
 import uuid
 import shutil
+import time
+from PIL import Image
 
 from .lib import add_watermark
 
@@ -21,6 +24,18 @@ app.mount("/static", StaticFiles(directory=os.path.join(os.path.dirname(__file__
 # 确保临时目录存在
 TEMP_DIR = os.path.join(os.path.dirname(__file__), "temp")
 os.makedirs(TEMP_DIR, exist_ok=True)
+
+MAX_UPLOAD_SIZE = 10 * 1024 * 1024  # 10MB
+
+class LimitUploadSizeMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request: Request, call_next):
+        if request.method == "POST":
+            content_length = request.headers.get("Content-Length")
+            if content_length and int(content_length) > MAX_UPLOAD_SIZE:
+                return Response("文件太大，最大支持10MB。", status_code=413)
+        return await call_next(request)
+
+app.add_middleware(LimitUploadSizeMiddleware)
 
 @app.get("/", response_class=HTMLResponse)
 async def read_root(request: Request):
