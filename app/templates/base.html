@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}图片水印服务{% endblock %}</title>
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+          integrity="sha512-pRIt5SV+giANYaq3cOFHd8KAt6EPxqLUlG3ThvfNUXUw0bxepsPqndgaPqwYT5YvGZJCN1q2B5OZwGelu8jQ+g=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- 自定义 CSS -->
+    <link rel="stylesheet" href="/static/css/styles.css">
+    {% block head %}{% endblock %}
+    <style>
+        /* 全局样式 */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        /* Header Styles */
+        .header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0; /* 去除左右 padding */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+        .header .logo {
+            font-size: 24px;
+            font-weight: bold;
+            margin-left: 20px; /* 可选：添加左边距，使logo不紧贴左边 */
+        }
+        .header .icon {
+            cursor: pointer;
+            font-size: 24px;
+            margin-right: 20px; /* 可选：添加右边距，使图标不紧贴右边 */
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.5); /* Black w/ opacity */
+        }
+        .modal-content {
+            background-color: #fff;
+            margin: 10% auto; /* 10% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+            border-radius: 8px;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close:hover,
+        .close:focus {
+            color: #000;
+        }
+
+        /* Main Content Padding to prevent footer overlap */
+        .main-content {
+            padding: 20px;
+            min-height: calc(100vh - 120px); /* 100vh - header(10px) - footer(50px) */
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="logo">Pixel Seal</div>
+        <div class="icon">
+            <i class="fas fa-user-circle" id="userIcon"></i>
+        </div>
+    </div>
+
+    <!-- Modal for Personal Information -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>个人信息</h2>
+            <p>这里展示您的个人信息或联系信息。</p>
+            <!-- 添加更多信息或内容 -->
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <a href="https://github.com/您的GitHub仓库" target="_blank" class="github-icon">
+            <i class="fab fa-github"></i>
+        </a>
+    </div>
+
+    <!-- Footer Styles -->
+    <style>
+        .footer {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0; /* 去除左右 padding */
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        .footer .github-icon {
+            color: #fff;
+            font-size: 24px;
+            text-decoration: none;
+        }
+        .footer .github-icon:hover {
+            color: #ddd;
+        }
+    </style>
+
+    <!-- JavaScript for Modal -->
+    <script>
+        // 获取模态元素
+        var modal = document.getElementById("myModal");
+
+        // 获取打开模态的按钮
+        var btn = document.getElementById("userIcon");
+
+        // 获取关闭模态的 <span> 元素
+        var span = document.getElementsByClassName("close")[0];
+
+        // 点击图标打开模态
+        btn.onclick = function() {
+            modal.style.display = "block";
+        }
+
+        // 点击 <span> (x) 关闭模态
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        // 点击窗口外部关闭模态
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>
